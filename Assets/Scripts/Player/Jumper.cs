@@ -2,14 +2,14 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(SurfaceSlider))]
+[RequireComponent(typeof(SurfaceDetector))]
 public class Jumper : MonoBehaviour
 {
     [SerializeField] private float _height;
     [SerializeField] private float _speed;
 
     private Rigidbody2D _rigidbody;
-    private SurfaceSlider _surfaceSlider;
+    private SurfaceDetector _surfaceDetector;
 
     private bool _isJumping;
     private Coroutine _jumpCoroutine;
@@ -17,12 +17,12 @@ public class Jumper : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
-        _surfaceSlider = GetComponent<SurfaceSlider>();
+        _surfaceDetector = GetComponent<SurfaceDetector>();
     }
 
     public void Jump()
     {
-        if (_isJumping == false && _surfaceSlider.IsGrounded)
+        if (_isJumping == false && _surfaceDetector.IsGrounded)
         {
             _jumpCoroutine = StartCoroutine(Jumping());
         }
