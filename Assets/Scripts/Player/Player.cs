@@ -4,10 +4,12 @@ using UnityEngine;
 [RequireComponent(typeof(Jumper))]
 [RequireComponent(typeof(ItemCollector))]
 [RequireComponent(typeof(Rigidbody2D))]
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageable, IMedicinable 
 {
     [SerializeField] private InputReader _inputReader;
-
+    [SerializeField] private int _maxHealth;
+    
+    private Health _health;
     private Mover _mover;
     private Jumper _jumper;
     private ItemCollector _itemCollector;
@@ -16,6 +18,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        _health = new Health(_maxHealth);
         _mover = GetComponent<Mover>();
         _jumper = GetComponent<Jumper>();
         _itemCollector = GetComponent<ItemCollector>();
@@ -35,6 +38,16 @@ public class Player : MonoBehaviour
         _inputReader.JumpButtonPressed -= Jump;
 
         _itemCollector.CoinCollected -= IncreaseMoney;
+    }
+
+    public void TakeDamage(int amount)
+    {
+        _health.TakeDamage(amount);
+    }
+
+    public void Treat(int amount)
+    {
+        _health.Treat(amount);
     }
 
     private void Move(float horizontal)
