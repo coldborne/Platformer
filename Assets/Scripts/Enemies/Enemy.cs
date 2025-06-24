@@ -1,57 +1,18 @@
-using System;
 using UnityEngine;
 
 namespace Enemies
 {
-    [RequireComponent(typeof(Mover))]
-    [RequireComponent(typeof(CircleCollider2D))]
-    public class Enemy : MonoBehaviour
+    public class Enemy : Unit
     {
         [SerializeField] private Collection _targetPoints;
         [SerializeField, Min(1f)] private float _arrivalThreshold;
 
-        [SerializeField] private int _damage;
-        [SerializeField] private int _attackCooldownTime;
-
-        private Mover _mover;
         private Transform _targetPoint;
 
-        private Timer _timer;
-
-        private bool _canAttack;
-
-        private void Awake()
+        protected override void Awake()
         {
-            _mover = GetComponent<Mover>();
+            base.Awake();
             _targetPoint = _targetPoints.Current;
-
-            _timer = new Timer();
-            ResetAttackCooldown();
-        }
-
-        private void OnEnable()
-        {
-            _timer.IsOver += ResetAttackCooldown;
-        }
-
-        private void OnDisable()
-        {
-            _timer.IsOver -= ResetAttackCooldown;
-        }
-
-        private void ResetAttackCooldown()
-        {
-            _canAttack = true;
-        }
-
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-            if (collision.TryGetComponent(out Player player) && _canAttack)
-            {
-                player.TakeDamage(_damage);
-                _canAttack = false;
-                StartCoroutine(_timer.DoCountdown(_attackCooldownTime));
-            }
         }
 
         private void Update()
@@ -68,13 +29,13 @@ namespace Enemies
 
         private void MoveStep()
         {
-            if (_mover.IsRightOf(_targetPoint))
+            if (IsRightOf(_targetPoint))
             {
-                _mover.Move((float)Directions.Left);
+                Move((float)Directions.Left);
             }
             else
             {
-                _mover.Move((float)Directions.Right);
+                Move((float)Directions.Right);
             }
         }
     }

@@ -8,6 +8,8 @@ public class Jumper : MonoBehaviour
     [SerializeField] private float _height;
     [SerializeField] private float _speed;
 
+    [SerializeField, Min(1f)] private float _arrivalThreshold;
+
     private Rigidbody2D _rigidbody;
     private SurfaceDetector _surfaceDetector;
 
@@ -34,11 +36,13 @@ public class Jumper : MonoBehaviour
         _rigidbody.velocity = Vector2.zero;
 
         Vector3 start = transform.position;
-        Vector3 target = start + transform.up * _height;
+        Vector3 targetPosition = start + transform.up * _height;
 
-        while (Vector3.Distance(transform.position, target) > 0.01f)
+        float sqrArrivalThreshold = _arrivalThreshold * _arrivalThreshold;
+
+        while ((transform.position - targetPosition).sqrMagnitude > sqrArrivalThreshold)
         {
-            transform.position = Vector3.MoveTowards(transform.position, target, _speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, _speed * Time.deltaTime);
             yield return null;
         }
 

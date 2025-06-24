@@ -47,9 +47,9 @@ public class Health : IDamageable, IMedicinable
         {
             throw new ArgumentOutOfRangeException("amount must be greater than zero");
         }
-        
+
         int newValue = Value + amount;
-        
+
         Value = newValue < _maxValue ? newValue : _maxValue;
     }
 }
