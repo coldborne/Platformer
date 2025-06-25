@@ -2079,6 +2079,7 @@ MonoBehaviour:
     - {fileID: 889280956}
     - {fileID: 1878582381}
   _arrivalThreshold: 1
+  _loseTargetDelay: 0
 --- !u!4 &1285669641
 Transform:
   m_ObjectHideFlags: 0
@@ -2780,7 +2781,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b7023ef39be86246b10e62b50d18b22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 130
+  _damage: 10
   _attackCooldownTime: 3
 --- !u!114 &1379840852
 MonoBehaviour:
