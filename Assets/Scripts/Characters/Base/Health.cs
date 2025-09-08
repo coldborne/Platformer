@@ -2,54 +2,52 @@ using System;
 
 public class Health : IDamageable, IMedicinable
 {
-    private readonly int _minValue;
-    private readonly int _maxValue;
-
     public event Action Died;
+    public event Action<int> ValueChanged;
 
     public Health(int maxValue)
     {
-        if (maxValue <= _minValue)
-        {
-            throw new ArgumentOutOfRangeException("maxValue must be greater than zero");
-        }
-
-        _maxValue = maxValue;
-        Value = _maxValue;
-        _minValue = 0;
+        MaxValue = maxValue;
+        Value = MaxValue;
     }
 
+    public int MinValue { get; } = 0;
+    public int MaxValue { get; }
     public int Value { get; private set; }
 
     public void TakeDamage(int amount)
     {
-        if (amount <= _minValue)
+        if (amount <= 0)
         {
             throw new ArgumentOutOfRangeException("amount must be greater than zero");
         }
 
         int newValue = Value - amount;
 
-        if (newValue > _minValue)
+        if (newValue > MinValue)
         {
             Value = newValue;
         }
         else
         {
-            Value = _minValue;
+            Value = MinValue;
             Died?.Invoke();
         }
+
+        ValueChanged?.Invoke(Value);
     }
 
     public void Treat(int amount)
     {
-        if (amount <= _minValue)
+        if (amount <= 0)
         {
             throw new ArgumentOutOfRangeException("amount must be greater than zero");
         }
 
         int newValue = Value + amount;
 
-        Value = newValue < _maxValue ? newValue : _maxValue;
+        Value = newValue < MaxValue ? newValue : MaxValue;
+
+        ValueChanged?.Invoke(Value);
     }
 }

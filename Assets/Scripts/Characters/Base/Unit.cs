@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Mover))]
@@ -12,6 +13,12 @@ public class Unit : MonoBehaviour, IDamageable, IMedicinable
 
     private ObjectDestroyer _objectDestroyer;
 
+    public event Action<int> HealthChanged;
+
+    public int MinHealth => _health.MinValue;
+    public int MaxHealth => _health.MaxValue;
+    public int Health => _health.Value;
+
     protected virtual void Awake()
     {
         _mover = GetComponent<Mover>();
@@ -23,11 +30,13 @@ public class Unit : MonoBehaviour, IDamageable, IMedicinable
     protected virtual void OnEnable()
     {
         _health.Died += Destroy;
+        _health.ValueChanged += ChangeHealth;
     }
 
     protected virtual void OnDisable()
     {
         _health.Died -= Destroy;
+        _health.ValueChanged -= ChangeHealth;
     }
 
     public void Move(float horizontal)
@@ -48,6 +57,11 @@ public class Unit : MonoBehaviour, IDamageable, IMedicinable
     public void Treat(int amount)
     {
         _health.Treat(amount);
+    }
+
+    private void ChangeHealth(int value)
+    {
+        HealthChanged?.Invoke(value);
     }
 
     private void Destroy()
