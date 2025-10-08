@@ -8,6 +8,7 @@ public class Timer
     private readonly float _timeTick;
 
     private float _remainingTime;
+    private WaitForSeconds _waitForSeconds;
 
     public event Action IsOver;
 
@@ -15,6 +16,7 @@ public class Timer
     {
         _minRemainingTime = 0;
         _timeTick = 1;
+        _waitForSeconds = new WaitForSeconds(_timeTick);
     }
 
     public IEnumerator DoCountdown(float startRemainingTime)
@@ -23,7 +25,7 @@ public class Timer
 
         while (_remainingTime > _minRemainingTime)
         {
-            yield return new WaitForSeconds(_timeTick);
+            yield return _waitForSeconds;
             _remainingTime -= _timeTick;
         }
 

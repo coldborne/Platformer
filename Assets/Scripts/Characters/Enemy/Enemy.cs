@@ -11,18 +11,20 @@ namespace Enemies
             Chasing
         }
 
-        [Header("Патрулирование")] 
-        [SerializeField] private Collection _targetPoints;
+        [Header("Патрулирование")] [SerializeField]
+        private Collection _targetPoints;
 
         [SerializeField, Min(1f)] private float _arrivalThreshold;
 
-        [Header("Преследование")] 
-        [SerializeField] private float _loseTargetDelay;
+        [Header("Преследование")] [SerializeField]
+        private float _loseTargetDelay;
 
         private Transform _targetPoint;
 
         private Transform _target;
         private Coroutine _losePlayerCoroutine;
+
+        private WaitForSeconds _waitForSeconds;
 
         private State _state;
 
@@ -31,6 +33,8 @@ namespace Enemies
             base.Awake();
             _targetPoint = _targetPoints.Current;
             _state = State.Patrolling;
+
+            _waitForSeconds = new WaitForSeconds(_loseTargetDelay);
         }
 
         private void OnTriggerEnter2D(Collider2D collider)
@@ -106,7 +110,7 @@ namespace Enemies
 
         private IEnumerator LosePlayerCountDown()
         {
-            yield return new WaitForSeconds(_loseTargetDelay);
+            yield return _waitForSeconds;
 
             _target = null;
             _state = State.Patrolling;
