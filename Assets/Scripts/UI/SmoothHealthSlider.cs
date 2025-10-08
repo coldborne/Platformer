@@ -32,9 +32,11 @@ public class SmoothHealthSlider : MonoBehaviour
     {
         _unit.HealthChanged -= Display;
 
-        StopAllCoroutines();
-        
-        _changingValueCoroutine = null;
+        if (_changingValueCoroutine != null)
+        {
+            StopCoroutine(_changingValueCoroutine);
+            _changingValueCoroutine = null;
+        }
     }
 
     private void Display(int value)
