@@ -5,13 +5,19 @@ public class InputReader : MonoBehaviour
 {
     private const string Horizontal = nameof(Horizontal);
 
+    private const KeyCode LeftMovingKey = KeyCode.A;
+    private const KeyCode LeftArrowMovingKey = KeyCode.LeftArrow;
+
+    private const KeyCode RightMovingKey = KeyCode.D;
+    private const KeyCode RightArrowMovingKey = KeyCode.RightArrow;
+
     public event Action<float> MoveButtonPressed;
     public event Action JumpButtonPressed;
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A) ||
-            Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(LeftMovingKey) || Input.GetKey(RightMovingKey) ||
+            Input.GetKey(LeftArrowMovingKey) || Input.GetKey(RightArrowMovingKey))
         {
             MoveButtonPressed?.Invoke(Input.GetAxis(Horizontal));
         }
