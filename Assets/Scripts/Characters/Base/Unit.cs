@@ -1,4 +1,5 @@
 using System;
+using Characters.Base;
 using UnityEngine;
 
 [RequireComponent(typeof(Mover))]
@@ -42,11 +43,6 @@ public class Unit : MonoBehaviour, IDamageable, IMedicinable
     public void Move(float horizontal)
     {
         _mover.Move(horizontal);
-    }
-
-    public bool IsRightOf(Transform target)
-    {
-        return _mover.IsRightOf(target);
     }
 
     public void TakeDamage(int amount)

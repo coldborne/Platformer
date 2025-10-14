@@ -17,9 +17,9 @@ namespace Characters.Base
             _surfaceDetector = GetComponent<SurfaceDetector>();
         }
 
-        public bool IsRightOf(Transform target)
+        public bool IsRightOf(Vector2 target)
         {
-            return _rigidbody.transform.position.x > target.position.x;
+            return _rigidbody.transform.position.x > target.x;
         }
 
         public void Move(float directionValue)
@@ -34,7 +34,7 @@ namespace Characters.Base
             _rigidbody.velocity = new Vector2(horizontalVelocity.x, velocity.y);
         }
     
-        public void MoveTowards(Transform target)
+        public void MoveTowards(Vector2 target)
         {
             if (IsRightOf(target))
             {
