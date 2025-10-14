@@ -1,34 +1,49 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(SurfaceDetector))]
-public class Mover : MonoBehaviour
+namespace Characters.Base
 {
-    [SerializeField] private float _speed;
-
-    private Rigidbody2D _rigidbody;
-    private SurfaceDetector _surfaceDetector;
-
-    private void Awake()
+    [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(SurfaceDetector))]
+    public class Mover : MonoBehaviour
     {
-        _rigidbody = GetComponent<Rigidbody2D>();
-        _surfaceDetector = GetComponent<SurfaceDetector>();
-    }
+        [SerializeField] private float _speed;
 
-    public bool IsRightOf(Transform target)
-    {
-        return _rigidbody.transform.position.x > target.position.x;
-    }
+        private Rigidbody2D _rigidbody;
+        private SurfaceDetector _surfaceDetector;
 
-    public void Move(float directionValue)
-    {
-        Vector2 velocity = _rigidbody.velocity;
+        private void Awake()
+        {
+            _rigidbody = GetComponent<Rigidbody2D>();
+            _surfaceDetector = GetComponent<SurfaceDetector>();
+        }
 
-        Vector3 direction = Vector3.right * directionValue;
-        Vector3 alongSurfaceDirection = _surfaceDetector.Project(direction.normalized);
+        public bool IsRightOf(Transform target)
+        {
+            return _rigidbody.transform.position.x > target.position.x;
+        }
 
-        Vector2 horizontalVelocity = alongSurfaceDirection * (_speed * Time.deltaTime);
+        public void Move(float directionValue)
+        {
+            Vector2 velocity = _rigidbody.velocity;
 
-        _rigidbody.velocity = new Vector2(horizontalVelocity.x, velocity.y);
+            Vector3 direction = Vector3.right * directionValue;
+            Vector3 alongSurfaceDirection = _surfaceDetector.Project(direction.normalized);
+
+            Vector2 horizontalVelocity = alongSurfaceDirection * (_speed * Time.deltaTime);
+
+            _rigidbody.velocity = new Vector2(horizontalVelocity.x, velocity.y);
+        }
+    
+        public void MoveTowards(Transform target)
+        {
+            if (IsRightOf(target))
+            {
+                Move((float)Directions.Left);
+            }
+            else
+            {
+                Move((float)Directions.Right);
+            }
+        }
     }
 }
