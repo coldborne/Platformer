@@ -1,5 +1,6 @@
 using System.Collections;
 using Characters.Base;
+using Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,28 +13,31 @@ namespace UI
         [SerializeField] private Unit _unit;
         [SerializeField] private float _speed;
 
+        private IHealth _unitHealth;
         private Slider _slider;
         private Coroutine _changingValueCoroutine;
 
         private void Awake()
         {
             _slider = GetComponent<Slider>();
+
+            _unitHealth = _unit.Health;
         
             _slider.interactable = false;
-            _slider.minValue = _unit.MinHealth;
-            _slider.maxValue = _unit.MaxHealth;
+            _slider.minValue = _unitHealth.MinValue;
+            _slider.maxValue = _unitHealth.MaxValue;
 
-            _slider.value = _unit.Health;
+            _slider.value = _unitHealth.Value;
         }
 
         private void OnEnable()
         {
-            _unit.HealthChanged += Display;
+            _unitHealth.ValueChanged += Display;
         }
 
         private void OnDisable()
         {
-            _unit.HealthChanged -= Display;
+            _unitHealth.ValueChanged -= Display;
 
             if (_changingValueCoroutine != null)
             {
@@ -42,7 +46,7 @@ namespace UI
             }
         }
 
-        private void Display(int value)
+        private void Display(float value)
         {
             if (_changingValueCoroutine != null)
             {

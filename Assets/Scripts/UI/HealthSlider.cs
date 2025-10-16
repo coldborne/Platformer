@@ -30,7 +30,7 @@ namespace UI
             _health.ValueChanged -= Display;
         }
 
-        private void Display(int value)
+        private void Display(float value)
         {
             _slider.value = value;
         }

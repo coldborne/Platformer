@@ -1,31 +1,32 @@
 using System;
 using Interfaces;
+using UnityEngine;
 
 namespace Characters.Base
 {
-    public class Health : IDamageable, IMedicinable
+    public class Health : IHealth
     {
         public event Action Died;
-        public event Action<int> ValueChanged;
+        public event Action<float> ValueChanged;
 
-        public Health(int maxValue)
+        public Health(float maxValue)
         {
             MaxValue = maxValue;
             Value = MaxValue;
         }
 
-        public int MinValue { get; } = 0;
-        public int MaxValue { get; }
-        public int Value { get; private set; }
+        public float MinValue { get; } = 0.0f;
+        public float MaxValue { get; }
+        public float Value { get; private set; }
 
-        public void TakeDamage(int amount)
+        public void TakeDamage(float amount)
         {
             if (amount <= 0)
             {
                 throw new ArgumentOutOfRangeException("amount must be greater than zero");
             }
 
-            int newValue = Value - amount;
+            float newValue = Value - amount;
 
             if (newValue > MinValue)
             {
@@ -40,14 +41,14 @@ namespace Characters.Base
             ValueChanged?.Invoke(Value);
         }
 
-        public void Treat(int amount)
+        public void Treat(float amount)
         {
             if (amount <= 0)
             {
                 throw new ArgumentOutOfRangeException("amount must be greater than zero");
             }
 
-            int newValue = Value + amount;
+            float newValue = Value + amount;
 
             Value = newValue < MaxValue ? newValue : MaxValue;
 

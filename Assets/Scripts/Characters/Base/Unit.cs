@@ -11,37 +11,29 @@ namespace Characters.Base
     [RequireComponent(typeof(ObjectDestroyer))]
     public class Unit : MonoBehaviour, IDamageable, IMedicinable
     {
-        [SerializeField] private int _maxHealth;
+        [SerializeField] private float _maxHealth;
 
         private Mover _mover;
-        private Health _health;
-
         private ObjectDestroyer _objectDestroyer;
 
-        public event Action<int> HealthChanged;
-
-        public int MinHealth => _health.MinValue;
-        public int MaxHealth => _health.MaxValue;
-        public int Health => _health.Value;
+        public IHealth Health { get; private set; }
 
         protected virtual void Awake()
         {
             _mover = GetComponent<Mover>();
-            _health = new Health(_maxHealth);
+            Health = new Health(_maxHealth);
 
             _objectDestroyer = GetComponent<ObjectDestroyer>();
         }
 
         protected virtual void OnEnable()
         {
-            _health.Died += Destroy;
-            _health.ValueChanged += ChangeHealth;
+            Health.Died += Destroy;
         }
 
         protected virtual void OnDisable()
         {
-            _health.Died -= Destroy;
-            _health.ValueChanged -= ChangeHealth;
+            Health.Died -= Destroy;
         }
 
         public void Move(float horizontal)
@@ -49,19 +41,14 @@ namespace Characters.Base
             _mover.Move(horizontal);
         }
 
-        public void TakeDamage(int amount)
+        public void TakeDamage(float amount)
         {
-            _health.TakeDamage(amount);
+            Health.TakeDamage(amount);
         }
 
-        public void Treat(int amount)
+        public void Treat(float amount)
         {
-            _health.Treat(amount);
-        }
-
-        private void ChangeHealth(int value)
-        {
-            HealthChanged?.Invoke(value);
+            Health.Treat(amount);
         }
 
         private void Destroy()

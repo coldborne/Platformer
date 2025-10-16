@@ -2,6 +2,6 @@
 {
     public interface IMedicinable
     {
-        void Treat(int amount);
+        void Treat(float amount);
     }
 }
