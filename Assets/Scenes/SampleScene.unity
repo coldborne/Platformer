@@ -131,7 +131,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 100064148}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Handle Slide Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 482813308}
   - component: {fileID: 482813309}
   - component: {fileID: 482813310}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1991,7 +1991,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 761425596}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2078,7 +2078,7 @@ GameObject:
   - component: {fileID: 803096913}
   - component: {fileID: 803096915}
   - component: {fileID: 803096914}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2698,7 +2698,7 @@ GameObject:
   - component: {fileID: 1285669651}
   - component: {fileID: 1285669652}
   - component: {fileID: 1285669653}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2920,7 +2920,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1285669639}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7b7023ef39be86246b10e62b50d18b22, type: 3}
   m_Name: 
@@ -3427,6 +3427,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHealth: 100
   _inputReader: {fileID: 988060496}
+  _perSecondDamage: 20
+  _durationSeconds: 6
+  _cooldownSeconds: 4
+  _radius: 2.5
+  _enemiesMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!114 &1379840851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3434,12 +3441,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1379840837}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7b7023ef39be86246b10e62b50d18b22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 50
+  _damage: 15
   _attackCooldownTime: 3
 --- !u!114 &1379840852
 MonoBehaviour:
@@ -3462,7 +3469,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1409782327}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3778,7 +3785,7 @@ GameObject:
   - component: {fileID: 1620857932}
   - component: {fileID: 1620857934}
   - component: {fileID: 1620857933}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3854,7 +3861,7 @@ GameObject:
   - component: {fileID: 1789804146}
   - component: {fileID: 1789804145}
   - component: {fileID: 1789804144}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3955,7 +3962,7 @@ GameObject:
   - component: {fileID: 1822644107}
   - component: {fileID: 1822644109}
   - component: {fileID: 1822644108}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}

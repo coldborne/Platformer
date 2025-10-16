@@ -12,9 +12,12 @@ namespace Input
 
         private const KeyCode RightMovingKey = KeyCode.D;
         private const KeyCode RightArrowMovingKey = KeyCode.RightArrow;
+        
+        private const KeyCode AbilityActivationKey = KeyCode.Q;
 
         public event Action<float> MoveButtonPressed;
         public event Action JumpButtonPressed;
+        public event Action AbilityActivationPressed;
 
         private void Update()
         {
@@ -27,6 +30,11 @@ namespace Input
             if (UnityEngine.Input.GetKeyDown(KeyCode.Space))
             {
                 JumpButtonPressed?.Invoke();
+            }
+
+            if (UnityEngine.Input.GetKeyDown(AbilityActivationKey))
+            {
+                AbilityActivationPressed?.Invoke();
             }
         }
     }
