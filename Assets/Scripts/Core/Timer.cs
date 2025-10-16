@@ -2,34 +2,37 @@
 using System.Collections;
 using UnityEngine;
 
-public class Timer
+namespace Core
 {
-    private readonly float _minRemainingTime;
-    private readonly float _timeTick;
-
-    private float _remainingTime;
-    private WaitForSeconds _waitForSeconds;
-
-    public event Action IsOver;
-
-    public Timer()
+    public class Timer
     {
-        _minRemainingTime = 0;
-        _timeTick = 1;
-        _waitForSeconds = new WaitForSeconds(_timeTick);
-    }
+        private readonly float _minRemainingTime;
+        private readonly float _timeTick;
 
-    public IEnumerator DoCountdown(float startRemainingTime)
-    {
-        _remainingTime = startRemainingTime;
+        private float _remainingTime;
+        private WaitForSeconds _waitForSeconds;
 
-        while (_remainingTime > _minRemainingTime)
+        public event Action IsOver;
+
+        public Timer()
         {
-            yield return _waitForSeconds;
-            _remainingTime -= _timeTick;
+            _minRemainingTime = 0;
+            _timeTick = 1;
+            _waitForSeconds = new WaitForSeconds(_timeTick);
         }
 
-        _remainingTime = _minRemainingTime;
-        IsOver?.Invoke();
+        public IEnumerator DoCountdown(float startRemainingTime)
+        {
+            _remainingTime = startRemainingTime;
+
+            while (_remainingTime > _minRemainingTime)
+            {
+                yield return _waitForSeconds;
+                _remainingTime -= _timeTick;
+            }
+
+            _remainingTime = _minRemainingTime;
+            IsOver?.Invoke();
+        }
     }
 }

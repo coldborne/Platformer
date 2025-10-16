@@ -1,67 +1,71 @@
 using System;
-using Characters.Base;
+using Interfaces;
+using Logic;
 using UnityEngine;
 
-[RequireComponent(typeof(Mover))]
-[RequireComponent(typeof(Attacker))]
-[RequireComponent(typeof(ObjectDestroyer))]
-public class Unit : MonoBehaviour, IDamageable, IMedicinable
+namespace Characters.Base
 {
-    [SerializeField] private int _maxHealth;
-
-    private Mover _mover;
-    private Health _health;
-
-    private ObjectDestroyer _objectDestroyer;
-
-    public event Action<int> HealthChanged;
-
-    public int MinHealth => _health.MinValue;
-    public int MaxHealth => _health.MaxValue;
-    public int Health => _health.Value;
-
-    protected virtual void Awake()
+    [RequireComponent(typeof(Mover))]
+    [RequireComponent(typeof(Attacker))]
+    [RequireComponent(typeof(ObjectDestroyer))]
+    public class Unit : MonoBehaviour, IDamageable, IMedicinable
     {
-        _mover = GetComponent<Mover>();
-        _health = new Health(_maxHealth);
+        [SerializeField] private int _maxHealth;
 
-        _objectDestroyer = GetComponent<ObjectDestroyer>();
-    }
+        private Mover _mover;
+        private Health _health;
 
-    protected virtual void OnEnable()
-    {
-        _health.Died += Destroy;
-        _health.ValueChanged += ChangeHealth;
-    }
+        private ObjectDestroyer _objectDestroyer;
 
-    protected virtual void OnDisable()
-    {
-        _health.Died -= Destroy;
-        _health.ValueChanged -= ChangeHealth;
-    }
+        public event Action<int> HealthChanged;
 
-    public void Move(float horizontal)
-    {
-        _mover.Move(horizontal);
-    }
+        public int MinHealth => _health.MinValue;
+        public int MaxHealth => _health.MaxValue;
+        public int Health => _health.Value;
 
-    public void TakeDamage(int amount)
-    {
-        _health.TakeDamage(amount);
-    }
+        protected virtual void Awake()
+        {
+            _mover = GetComponent<Mover>();
+            _health = new Health(_maxHealth);
 
-    public void Treat(int amount)
-    {
-        _health.Treat(amount);
-    }
+            _objectDestroyer = GetComponent<ObjectDestroyer>();
+        }
 
-    private void ChangeHealth(int value)
-    {
-        HealthChanged?.Invoke(value);
-    }
+        protected virtual void OnEnable()
+        {
+            _health.Died += Destroy;
+            _health.ValueChanged += ChangeHealth;
+        }
 
-    private void Destroy()
-    {
-        _objectDestroyer.DestroyObject(gameObject);
+        protected virtual void OnDisable()
+        {
+            _health.Died -= Destroy;
+            _health.ValueChanged -= ChangeHealth;
+        }
+
+        public void Move(float horizontal)
+        {
+            _mover.Move(horizontal);
+        }
+
+        public void TakeDamage(int amount)
+        {
+            _health.TakeDamage(amount);
+        }
+
+        public void Treat(int amount)
+        {
+            _health.Treat(amount);
+        }
+
+        private void ChangeHealth(int value)
+        {
+            HealthChanged?.Invoke(value);
+        }
+
+        private void Destroy()
+        {
+            _objectDestroyer.DestroyObject(gameObject);
+        }
     }
 }

@@ -1,24 +1,29 @@
 using System;
+using Items;
+using Logic;
 using UnityEngine;
 
-[RequireComponent(typeof(ObjectDestroyer))]
-public class ItemCollector : MonoBehaviour
+namespace Characters.Players
 {
-    private ObjectDestroyer _objectDestroyer;
-
-    public event Action<int> CoinCollected;
-
-    private void Awake()
+    [RequireComponent(typeof(ObjectDestroyer))]
+    public class ItemCollector : MonoBehaviour
     {
-        _objectDestroyer = GetComponent<ObjectDestroyer>();
-    }
+        private ObjectDestroyer _objectDestroyer;
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.TryGetComponent(out Coin coin))
+        public event Action<int> CoinCollected;
+
+        private void Awake()
         {
-            CoinCollected?.Invoke(coin.Value);
-            _objectDestroyer.DestroyObject(coin.gameObject);
+            _objectDestroyer = GetComponent<ObjectDestroyer>();
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.TryGetComponent(out Coin coin))
+            {
+                CoinCollected?.Invoke(coin.Value);
+                _objectDestroyer.DestroyObject(coin.gameObject);
+            }
         }
     }
 }

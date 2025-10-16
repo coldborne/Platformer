@@ -1,3 +1,5 @@
+using Core;
+using Environment;
 using UnityEngine;
 
 namespace Characters.Base

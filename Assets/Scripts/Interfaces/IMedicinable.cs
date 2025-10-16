@@ -1,4 +1,7 @@
-﻿public interface IMedicinable
+﻿namespace Interfaces
 {
-    void Treat(int amount);
+    public interface IMedicinable
+    {
+        void Treat(int amount);
+    }
 }

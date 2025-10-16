@@ -1,30 +1,33 @@
 using System;
 using UnityEngine;
 
-public class InputReader : MonoBehaviour
+namespace Input
 {
-    private const string Horizontal = nameof(Horizontal);
-
-    private const KeyCode LeftMovingKey = KeyCode.A;
-    private const KeyCode LeftArrowMovingKey = KeyCode.LeftArrow;
-
-    private const KeyCode RightMovingKey = KeyCode.D;
-    private const KeyCode RightArrowMovingKey = KeyCode.RightArrow;
-
-    public event Action<float> MoveButtonPressed;
-    public event Action JumpButtonPressed;
-
-    private void Update()
+    public class InputReader : MonoBehaviour
     {
-        if (Input.GetKey(LeftMovingKey) || Input.GetKey(RightMovingKey) ||
-            Input.GetKey(LeftArrowMovingKey) || Input.GetKey(RightArrowMovingKey))
-        {
-            MoveButtonPressed?.Invoke(Input.GetAxis(Horizontal));
-        }
+        private const string Horizontal = nameof(Horizontal);
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        private const KeyCode LeftMovingKey = KeyCode.A;
+        private const KeyCode LeftArrowMovingKey = KeyCode.LeftArrow;
+
+        private const KeyCode RightMovingKey = KeyCode.D;
+        private const KeyCode RightArrowMovingKey = KeyCode.RightArrow;
+
+        public event Action<float> MoveButtonPressed;
+        public event Action JumpButtonPressed;
+
+        private void Update()
         {
-            JumpButtonPressed?.Invoke();
+            if (UnityEngine.Input.GetKey(LeftMovingKey) || UnityEngine.Input.GetKey(RightMovingKey) ||
+                UnityEngine.Input.GetKey(LeftArrowMovingKey) || UnityEngine.Input.GetKey(RightArrowMovingKey))
+            {
+                MoveButtonPressed?.Invoke(UnityEngine.Input.GetAxis(Horizontal));
+            }
+
+            if (UnityEngine.Input.GetKeyDown(KeyCode.Space))
+            {
+                JumpButtonPressed?.Invoke();
+            }
         }
     }
 }

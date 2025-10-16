@@ -1,5 +1,6 @@
 ﻿using Characters.Base;
 using Interfaces;
+using Logic;
 using UnityEngine;
 
 namespace Characters.Enemies

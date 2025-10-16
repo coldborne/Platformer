@@ -1,5 +1,8 @@
-﻿public enum Directions
+﻿namespace Core
 {
-    Right = 1,
-    Left = -1,
+    public enum Directions
+    {
+        Right = 1,
+        Left = -1,
+    }
 }

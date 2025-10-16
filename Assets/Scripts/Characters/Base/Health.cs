@@ -1,53 +1,57 @@
 using System;
+using Interfaces;
 
-public class Health : IDamageable, IMedicinable
+namespace Characters.Base
 {
-    public event Action Died;
-    public event Action<int> ValueChanged;
-
-    public Health(int maxValue)
+    public class Health : IDamageable, IMedicinable
     {
-        MaxValue = maxValue;
-        Value = MaxValue;
-    }
+        public event Action Died;
+        public event Action<int> ValueChanged;
 
-    public int MinValue { get; } = 0;
-    public int MaxValue { get; }
-    public int Value { get; private set; }
-
-    public void TakeDamage(int amount)
-    {
-        if (amount <= 0)
+        public Health(int maxValue)
         {
-            throw new ArgumentOutOfRangeException("amount must be greater than zero");
+            MaxValue = maxValue;
+            Value = MaxValue;
         }
 
-        int newValue = Value - amount;
+        public int MinValue { get; } = 0;
+        public int MaxValue { get; }
+        public int Value { get; private set; }
 
-        if (newValue > MinValue)
+        public void TakeDamage(int amount)
         {
-            Value = newValue;
+            if (amount <= 0)
+            {
+                throw new ArgumentOutOfRangeException("amount must be greater than zero");
+            }
+
+            int newValue = Value - amount;
+
+            if (newValue > MinValue)
+            {
+                Value = newValue;
+            }
+            else
+            {
+                Value = MinValue;
+                Died?.Invoke();
+            }
+
+            ValueChanged?.Invoke(Value);
         }
-        else
+
+        public void Treat(int amount)
         {
-            Value = MinValue;
-            Died?.Invoke();
+            if (amount <= 0)
+            {
+                throw new ArgumentOutOfRangeException("amount must be greater than zero");
+            }
+
+            int newValue = Value + amount;
+
+            Value = newValue < MaxValue ? newValue : MaxValue;
+
+            ValueChanged?.Invoke(Value);
         }
-
-        ValueChanged?.Invoke(Value);
-    }
-
-    public void Treat(int amount)
-    {
-        if (amount <= 0)
-        {
-            throw new ArgumentOutOfRangeException("amount must be greater than zero");
-        }
-
-        int newValue = Value + amount;
-
-        Value = newValue < MaxValue ? newValue : MaxValue;
-
-        ValueChanged?.Invoke(Value);
     }
 }

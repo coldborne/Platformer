@@ -1,29 +1,34 @@
 using System;
+using Interfaces;
+using Logic;
 using UnityEngine;
 
-[RequireComponent(typeof(ObjectDestroyer))]
-public class FirstAidKit : MonoBehaviour
+namespace Items
 {
-    [SerializeField] private int _amount;
-
-    private ObjectDestroyer _objectDestroyer;
-
-    private void Awake()
+    [RequireComponent(typeof(ObjectDestroyer))]
+    public class FirstAidKit : MonoBehaviour
     {
-        if (_amount <= 0)
+        [SerializeField] private int _amount;
+
+        private ObjectDestroyer _objectDestroyer;
+
+        private void Awake()
         {
-            throw new ArgumentOutOfRangeException("Amount must be greater than zero");
+            if (_amount <= 0)
+            {
+                throw new ArgumentOutOfRangeException("Amount must be greater than zero");
+            }
+
+            _objectDestroyer = GetComponent<ObjectDestroyer>();
         }
 
-        _objectDestroyer = GetComponent<ObjectDestroyer>();
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.TryGetComponent(out IMedicinable medicinableComponent))
+        private void OnCollisionEnter2D(Collision2D collision)
         {
-            medicinableComponent.Treat(_amount);
-            _objectDestroyer.DestroyObject(gameObject);
+            if (collision.gameObject.TryGetComponent(out IMedicinable medicinableComponent))
+            {
+                medicinableComponent.Treat(_amount);
+                _objectDestroyer.DestroyObject(gameObject);
+            }
         }
     }
 }

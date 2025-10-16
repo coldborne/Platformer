@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Characters.Base;
 using Interfaces;
+using Logic;
 
 namespace Characters.Enemies
 {

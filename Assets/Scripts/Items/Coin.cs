@@ -1,9 +1,12 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Collider2D))]
-public class Coin : MonoBehaviour
+namespace Items
 {
-    [SerializeField] private int _value;
+    [RequireComponent(typeof(Collider2D))]
+    public class Coin : MonoBehaviour
+    {
+        [SerializeField] private int _value;
     
-    public int Value => _value;
+        public int Value => _value;
+    }
 }

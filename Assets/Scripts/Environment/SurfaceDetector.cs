@@ -1,45 +1,48 @@
 using UnityEngine;
 
-public class SurfaceDetector : MonoBehaviour
+namespace Environment
 {
-    private readonly float _minForGroundAngle = 45f;
-
-    private Vector3 _normal;
-
-    public bool IsGrounded { get; private set; }
-
-    public Vector3 Project(Vector3 direction)
+    public class SurfaceDetector : MonoBehaviour
     {
-        return direction - Vector3.Dot(direction, _normal) * _normal;
-    }
+        private readonly float _minForGroundAngle = 45f;
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (IsOnGround(collision, out ContactPoint2D contact))
+        private Vector3 _normal;
+
+        public bool IsGrounded { get; private set; }
+
+        public Vector3 Project(Vector3 direction)
         {
-            _normal = contact.normal;
-            IsGrounded = true;
+            return direction - Vector3.Dot(direction, _normal) * _normal;
         }
-    }
 
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        IsGrounded = false;
-    }
-
-    private bool IsOnGround(Collision2D collision, out ContactPoint2D ground)
-    {
-        ground = new ContactPoint2D();
-        
-        foreach (ContactPoint2D contact in collision.contacts)
+        private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (Vector2.Angle(transform.up, contact.normal) < _minForGroundAngle)
+            if (IsOnGround(collision, out ContactPoint2D contact))
             {
-                ground = contact;
-                return true;
+                _normal = contact.normal;
+                IsGrounded = true;
             }
         }
 
-        return false;
+        private void OnCollisionExit2D(Collision2D collision)
+        {
+            IsGrounded = false;
+        }
+
+        private bool IsOnGround(Collision2D collision, out ContactPoint2D ground)
+        {
+            ground = new ContactPoint2D();
+        
+            foreach (ContactPoint2D contact in collision.contacts)
+            {
+                if (Vector2.Angle(transform.up, contact.normal) < _minForGroundAngle)
+                {
+                    ground = contact;
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }
