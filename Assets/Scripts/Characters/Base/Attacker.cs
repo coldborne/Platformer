@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Characters.Base
 {
+    [DisallowMultipleComponent]
     [RequireComponent(typeof(CircleCollider2D))]
     public class Attacker : MonoBehaviour
     {

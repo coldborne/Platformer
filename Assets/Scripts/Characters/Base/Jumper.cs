@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Characters.Base
 {
+    [DisallowMultipleComponent]
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(SurfaceDetector))]
     public class Jumper : MonoBehaviour

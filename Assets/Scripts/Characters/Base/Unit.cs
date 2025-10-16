@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Characters.Base
 {
+    [DisallowMultipleComponent]
     [RequireComponent(typeof(Mover))]
     [RequireComponent(typeof(Attacker))]
     [RequireComponent(typeof(ObjectDestroyer))]
