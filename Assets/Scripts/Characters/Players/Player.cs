@@ -1,7 +1,9 @@
-using System.Collections;
+using System;
 using Characters.Base;
 using Characters.Players.Abilities;
 using Input;
+using Interfaces;
+using Logic;
 using UnityEngine;
 
 namespace Characters.Players
@@ -21,7 +23,7 @@ namespace Characters.Players
 
         [Header("Поиск целей")]
         [SerializeField]
-        private float _radius = 2.5f;
+        private float _vampirismAbilityRadius = 2.5f;
 
         [SerializeField] private LayerMask _enemiesMask;
 
@@ -30,10 +32,10 @@ namespace Characters.Players
 
         private VampirismAbility _vampirismAbility;
         private int _money;
-
-        private bool _isActive;
-        private bool _isOnCooldown;
-        private WaitForSeconds _waitCooldown;
+        
+        public event Action<float> AbilityTimeChanged;
+        public event Action<float, float, bool> AbilityStarted;
+        public event Action<float, float, bool> AbilityCooldownStarted;
 
         protected override void Awake()
         {
@@ -41,15 +43,18 @@ namespace Characters.Players
             _jumper = GetComponent<Jumper>();
             _itemCollector = GetComponent<ItemCollector>();
 
+            GameObject coroutineRunnerObject = CreateCoroutineRunnerObject();
+            ICoroutine coroutineRunner = coroutineRunnerObject.GetComponent<CoroutineRunner>();
+            
             _vampirismAbility = new VampirismAbility(
                 Health,
                 _perSecondDamage,
                 _durationSeconds,
-                _radius,
+                _cooldownSeconds,
+                _vampirismAbilityRadius,
                 _enemiesMask,
-                transform);
-
-            _waitCooldown = new WaitForSeconds(_cooldownSeconds);
+                transform,
+                coroutineRunner);
         }
 
         protected override void OnEnable()
@@ -60,6 +65,10 @@ namespace Characters.Players
             _inputReader.AbilityActivationPressed += TryActivateAbility;
 
             _itemCollector.CoinCollected += IncreaseMoney;
+
+            _vampirismAbility.ValueChanged += GetAbilityTime;
+            _vampirismAbility.Started += GetAbilityData;
+            _vampirismAbility.CooldownStarted += GetAbilityCooldownData;
         }
 
         protected override void OnDisable()
@@ -70,6 +79,25 @@ namespace Characters.Players
             _inputReader.AbilityActivationPressed -= TryActivateAbility;
 
             _itemCollector.CoinCollected -= IncreaseMoney;
+            
+            _vampirismAbility.ValueChanged -= GetAbilityTime;
+            _vampirismAbility.Started -= GetAbilityData;
+            _vampirismAbility.CooldownStarted -= GetAbilityCooldownData;
+        }
+
+        private void GetAbilityData(float startedTime, float endTime, bool isAscending)
+        {
+            AbilityStarted?.Invoke(startedTime, endTime, isAscending);
+        }
+        
+        private void GetAbilityCooldownData(float startedTime, float endTime, bool isAscending)
+        {
+            AbilityCooldownStarted?.Invoke(startedTime, endTime, isAscending);
+        }
+
+        private void GetAbilityTime(float time)
+        {
+            AbilityTimeChanged?.Invoke(time);
         }
 
         private void Jump()
@@ -79,30 +107,29 @@ namespace Characters.Players
 
         private void TryActivateAbility()
         {
-            if (_isActive || _isOnCooldown)
-            {
-                return;
-            }
-
-            StartCoroutine(ActivateAbility());
-        }
-
-        private IEnumerator ActivateAbility()
-        {
-            _isActive = true;
-
-            yield return StartCoroutine(_vampirismAbility.Drain());
-
-            _isActive = false;
-
-            _isOnCooldown = true;
-            yield return _waitCooldown;
-            _isOnCooldown = false;
+            _vampirismAbility.Activate();
         }
 
         private void IncreaseMoney(int value)
         {
             _money += value;
         }
+
+        private GameObject CreateCoroutineRunnerObject()
+        {
+            GameObject coroutineRunnerObject = new GameObject("CoroutineRunner");
+            coroutineRunnerObject.AddComponent<CoroutineRunner>();
+
+            return coroutineRunnerObject;
+        }
+
+#if UNITY_EDITOR
+        private void OnDrawGizmosSelected()
+        {
+            Transform center = transform;
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(center.position, _vampirismAbilityRadius);
+        }
+#endif
     }
 }
