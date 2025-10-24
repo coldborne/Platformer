@@ -8,8 +8,7 @@ namespace Core
     {
         private readonly float _minRemainingTime;
         private readonly float _timeTick;
-
-        private float _remainingTime;
+        
         private WaitForSeconds _waitForSeconds;
 
         public event Action IsOver;
@@ -20,18 +19,20 @@ namespace Core
             _timeTick = 1;
             _waitForSeconds = new WaitForSeconds(_timeTick);
         }
+        
+        public float RemainingTime { get; private set; }
 
         public IEnumerator DoCountdown(float startRemainingTime)
         {
-            _remainingTime = startRemainingTime;
+            RemainingTime = startRemainingTime;
 
-            while (_remainingTime > _minRemainingTime)
+            while (RemainingTime > _minRemainingTime)
             {
                 yield return _waitForSeconds;
-                _remainingTime -= _timeTick;
+                RemainingTime -= _timeTick;
             }
 
-            _remainingTime = _minRemainingTime;
+            RemainingTime = _minRemainingTime;
             IsOver?.Invoke();
         }
     }
