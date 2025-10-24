@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Items
 {
+    [DisallowMultipleComponent]
     [RequireComponent(typeof(ObjectDestroyer))]
     public class FirstAidKit : MonoBehaviour
     {

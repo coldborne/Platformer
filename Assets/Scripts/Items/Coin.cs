@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace Items
 {
+    [DisallowMultipleComponent]
     [RequireComponent(typeof(Collider2D))]
     public class Coin : MonoBehaviour
     {

@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace Environment
 {
+    [DisallowMultipleComponent]
     public class SurfaceDetector : MonoBehaviour
     {
         private readonly float _minForGroundAngle = 45f;

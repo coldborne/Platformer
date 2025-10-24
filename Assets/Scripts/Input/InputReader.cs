@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Input
 {
+    [DisallowMultipleComponent]
     public class InputReader : MonoBehaviour
     {
         private const string Horizontal = nameof(Horizontal);

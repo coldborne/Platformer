@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Characters.Enemies
 {
+    [DisallowMultipleComponent]
     [RequireComponent(typeof(CircleCollider2D))]
     public class PlayerFinder : MonoBehaviour
     {

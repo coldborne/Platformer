@@ -8,6 +8,7 @@ using UnityEngine;
 
 namespace Characters.Players
 {
+    [DisallowMultipleComponent]
     [RequireComponent(typeof(Jumper))]
     [RequireComponent(typeof(ItemCollector))]
     public class Player : Unit
@@ -32,7 +33,7 @@ namespace Characters.Players
 
         private VampirismAbility _vampirismAbility;
         private int _money;
-        
+
         public event Action<float> AbilityTimeChanged;
         public event Action<float, float, bool> AbilityStarted;
         public event Action<float, float, bool> AbilityCooldownStarted;
@@ -45,7 +46,7 @@ namespace Characters.Players
 
             GameObject coroutineRunnerObject = CreateCoroutineRunnerObject();
             ICoroutine coroutineRunner = coroutineRunnerObject.GetComponent<CoroutineRunner>();
-            
+
             _vampirismAbility = new VampirismAbility(
                 Health,
                 _perSecondDamage,
@@ -79,7 +80,7 @@ namespace Characters.Players
             _inputReader.AbilityActivationPressed -= TryActivateAbility;
 
             _itemCollector.CoinCollected -= IncreaseMoney;
-            
+
             _vampirismAbility.ValueChanged -= GetAbilityTime;
             _vampirismAbility.Started -= GetAbilityData;
             _vampirismAbility.CooldownStarted -= GetAbilityCooldownData;
@@ -89,7 +90,7 @@ namespace Characters.Players
         {
             AbilityStarted?.Invoke(startedTime, endTime, isAscending);
         }
-        
+
         private void GetAbilityCooldownData(float startedTime, float endTime, bool isAscending)
         {
             AbilityCooldownStarted?.Invoke(startedTime, endTime, isAscending);
@@ -122,14 +123,5 @@ namespace Characters.Players
 
             return coroutineRunnerObject;
         }
-
-#if UNITY_EDITOR
-        private void OnDrawGizmosSelected()
-        {
-            Transform center = transform;
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(center.position, _vampirismAbilityRadius);
-        }
-#endif
     }
 }

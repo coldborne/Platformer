@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Characters.Enemies
 {
+    [DisallowMultipleComponent]
     [RequireComponent(typeof(PlayerFinder))]
     public class Enemy : Unit
     {
