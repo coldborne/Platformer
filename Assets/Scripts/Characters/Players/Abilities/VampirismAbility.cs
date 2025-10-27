@@ -31,6 +31,7 @@ namespace Characters.Players.Abilities
 
         public event Action<float, float, bool> Started;
         public event Action<float, float, bool> CooldownStarted;
+        public event Action CooldownFinished;
         public event Action<float> ValueChanged;
 
         public VampirismAbility(
@@ -115,6 +116,7 @@ namespace Characters.Players.Abilities
             ValueChanged?.Invoke(_elapsedTime);
 
             _isOnCooldown = false;
+            CooldownFinished?.Invoke();
         }
 
         [CanBeNull]

@@ -21,11 +21,7 @@ namespace Characters.Players
 
         [SerializeField] private float _durationSeconds = 6f;
         [SerializeField] private float _cooldownSeconds = 4f;
-
-        [Header("Поиск целей")]
-        [SerializeField]
-        private float _vampirismAbilityRadius = 2.5f;
-
+        [SerializeField] private float _vampirismAbilityRadius = 2.5f;
         [SerializeField] private LayerMask _enemiesMask;
 
         private Jumper _jumper;
@@ -37,6 +33,10 @@ namespace Characters.Players
         public event Action<float> AbilityTimeChanged;
         public event Action<float, float, bool> AbilityStarted;
         public event Action<float, float, bool> AbilityCooldownStarted;
+        
+        public event Action AbilityCooldownFinished;
+        
+        public float VampirismAbilityRadius => _vampirismAbilityRadius;
 
         protected override void Awake()
         {
@@ -52,7 +52,7 @@ namespace Characters.Players
                 _perSecondDamage,
                 _durationSeconds,
                 _cooldownSeconds,
-                _vampirismAbilityRadius,
+                VampirismAbilityRadius,
                 _enemiesMask,
                 transform,
                 coroutineRunner);
@@ -70,6 +70,7 @@ namespace Characters.Players
             _vampirismAbility.ValueChanged += GetAbilityTime;
             _vampirismAbility.Started += GetAbilityData;
             _vampirismAbility.CooldownStarted += GetAbilityCooldownData;
+            _vampirismAbility.CooldownFinished += ReportAbilityCooldownFinished;
         }
 
         protected override void OnDisable()
@@ -84,6 +85,7 @@ namespace Characters.Players
             _vampirismAbility.ValueChanged -= GetAbilityTime;
             _vampirismAbility.Started -= GetAbilityData;
             _vampirismAbility.CooldownStarted -= GetAbilityCooldownData;
+            _vampirismAbility.CooldownFinished -= ReportAbilityCooldownFinished;
         }
 
         private void GetAbilityData(float startedTime, float endTime, bool isAscending)
@@ -99,6 +101,11 @@ namespace Characters.Players
         private void GetAbilityTime(float time)
         {
             AbilityTimeChanged?.Invoke(time);
+        }
+
+        private void ReportAbilityCooldownFinished()
+        {
+            AbilityCooldownFinished?.Invoke();
         }
 
         private void Jump()
